@@ -1,4 +1,4 @@
-const socket = io("https://senin-mangala-backend-linkin.onrender.com");
+const socket = io("https://mangala-online.onrender.com");
 let board = [4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0];
 let currentPlayer = 1;
 let myPlayerNumber = null;
