@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mangala Online 3D</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <h2 id="turn-info">Bir odaya bağlanılıyor...</h2>
+        
+        <div class="board-wrapper">
+            <div class="board">
+                <div class="hazine-wrapper">
+                    <div class="pit hazine" id="pit-13"></div>
+                    <div class="count" id="count-13">0</div>
+                </div>
+
+                <div class="pits-column">
+                    <div class="row opponent-row">
+                        <div class="pit-wrapper"><div class="pit" id="pit-12" onclick="handleInput(12)"></div><div class="count" id="count-12">4</div></div>
+                        <div class="pit-wrapper"><div class="pit" id="pit-11" onclick="handleInput(11)"></div><div class="count" id="count-11">4</div></div>
+                        <div class="pit-wrapper"><div class="pit" id="pit-10" onclick="handleInput(10)"></div><div class="count" id="count-10">4</div></div>
+                        <div class="pit-wrapper"><div class="pit" id="pit-9" onclick="handleInput(9)"></div><div class="count" id="count-9">4</div></div>
+                        <div class="pit-wrapper"><div class="pit" id="pit-8" onclick="handleInput(8)"></div><div class="count" id="count-8">4</div></div>
+                        <div class="pit-wrapper"><div class="pit" id="pit-7" onclick="handleInput(7)"></div><div class="count" id="count-7">4</div></div>
+                    </div>
+                    <div class="row player-row">
+                        <div class="pit-wrapper"><div class="pit" id="pit-0" onclick="handleInput(0)"></div><div class="count" id="count-0">4</div></div>
+                        <div class="pit-wrapper"><div class="pit" id="pit-1" onclick="handleInput(1)"></div><div class="count" id="count-1">4</div></div>
+                        <div class="pit-wrapper"><div class="pit" id="pit-2" onclick="handleInput(2)"></div><div class="count" id="count-2">4</div></div>
+                        <div class="pit-wrapper"><div class="pit" id="pit-3" onclick="handleInput(3)"></div><div class="count" id="count-3">4</div></div>
+                        <div class="pit-wrapper"><div class="pit" id="pit-4" onclick="handleInput(4)"></div><div class="count" id="count-4">4</div></div>
+                        <div class="pit-wrapper"><div class="pit" id="pit-5" onclick="handleInput(5)"></div><div class="count" id="count-5">4</div></div>
+                    </div>
+                </div>
+
+                <div class="hazine-wrapper">
+                    <div class="pit hazine" id="pit-6"></div>
+                    <div class="count" id="count-6">0</div>
+                </div>
+            </div>
+
+            <div class="controls" style="margin-top: 20px; text-align: center;">
+                <button id="reset-btn" style="padding: 10px 20px; cursor: pointer; border-radius: 5px; border: 1px solid #333; font-weight: bold;">
+                    🔄 Oyunu Yeniden Başlat
+                </button>
+            </div>    
+        </div>
+
+        <div class="footer">mehmet made mangala dırşoskis dırşoskas Ğ</div>
+    </div>
+
+    <div id="reset-modal" style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border: 2px solid #333; padding: 25px; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border-radius: 8px; text-align: center; min-width: 300px;">
+        <p id="modal-text" style="font-weight: bold; margin-bottom: 15px; color: #333;">Rakibin oyunu sıfırlamak istiyor.<br>Kabul ediyor musun?</p>
+        <button id="accept-reset" style="background-color: #28a745; color: white; border: none; padding: 10px 20px; margin-right: 10px; cursor: pointer; border-radius: 4px; font-weight: bold;">Evet, Başlayalım</button>
+        <button id="decline-reset" style="background-color: #dc3545; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; font-weight: bold;">Hayır, Devam Et</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
