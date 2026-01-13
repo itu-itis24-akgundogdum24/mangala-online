@@ -59,6 +59,11 @@ io.on('connection', (socket) => {
             // Oyuncuyu listeden çıkar
             rooms[roomId].players = rooms[roomId].players.filter(id => id !== socket.id);
             
+            // YENİ: Kalan oyuncuya rakibin ayrıldığını bildir
+            if (rooms[roomId].players.length === 1) {
+                io.to(roomId).emit('opponent_disconnected');
+            }
+            
             // Eğer odada kimse kalmadıysa odayı tamamen sil (Bellek tasarrufu ve temiz başlangıç)
             if (rooms[roomId].players.length === 0) {
                 delete rooms[roomId];
