@@ -1,14 +1,29 @@
-const socket = io("https://mangala-online.onrender.com");
+// Render linkinin sonundaki "/" işaretini sildiğinden emin ol!
+// "transports" ekleyerek bağlantı hızını maksimuma çıkardık.
+const socket = io("https://mangala-online.onrender.com", {
+    transports: ["websocket"]
+});
+
 let board = [4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0];
 let currentPlayer = 1;
 let myPlayerNumber = null;
 let isAnimating = false;
 
-// --- YENİ: DOM Elemanları ---
+// DOM Elemanları
 const resetBtn = document.getElementById('reset-btn');
 const resetModal = document.getElementById('reset-modal');
 const acceptBtn = document.getElementById('accept-reset');
 const declineBtn = document.getElementById('decline-reset');
+const turnInfo = document.getElementById("turn-info");
+
+// Bağlantı Kontrolü (Hata ayıklama için)
+socket.on('connect', () => {
+    console.log("Sunucuya bağlandık!");
+});
+
+socket.on('connect_error', () => {
+    turnInfo.innerText = "Sunucu uyanıyor... Lütfen bekleyin.";
+});
 
 // Oda Yönetimi
 let roomId = new URLSearchParams(window.location.search).get('room') || Math.random().toString(36).substring(7);
@@ -30,66 +45,59 @@ socket.on('gameStart', () => {
 
 socket.on('opponentMove', (idx) => executeMove(idx));
 
-// --- YENİ: SIFIRLAMA SOCKET DİNLEYİCİLERİ ---
+// --- SIFIRLAMA SİSTEMİ ---
 
-// 1. Rakip sıfırlama istediğinde modalı göster
 socket.on('opponent_requested_reset', () => {
     resetModal.style.display = 'block';
 });
 
-// 2. Oyun sıfırlandığında (Her iki tarafa da gelir)
 socket.on('game_restarted', () => {
-    // Değişkenleri başlangıç haline getir
     board = [4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0];
     currentPlayer = 1;
     isAnimating = false;
-    
-    // Arayüzü temizle
     resetModal.style.display = 'none';
     updateBoardVisuals();
     updateStatus();
-    alert("Oyun başarıyla sıfırlandı!");
+    alert("Oyun taptaze bir başlangıç yaptı!");
 });
 
-// 3. Rakip reddettiğinde
 socket.on('reset_declined', () => {
-    alert("Rakibin sıfırlama isteğini reddetti.");
+    alert("Rakibin oyunu sıfırlama isteğini reddetti.");
 });
 
-// --- YENİ: BUTON OLAYLARI ---
+// --- BUTON OLAYLARI ---
 
-// Sıfırla butonuna basınca istek gönder
 resetBtn.addEventListener('click', () => {
-    if(isAnimating) return; // Taşlar hareket ederken istek atılmasın
+    if(isAnimating) return;
     socket.emit('request_reset', roomId);
-    alert("Sıfırlama isteği rakibe gönderildi...");
+    alert("Sıfırlama isteği gönderildi, rakip onayı bekleniyor...");
 });
 
-// "Evet" butonuna basınca onayla
 acceptBtn.addEventListener('click', () => {
     socket.emit('confirm_reset', roomId);
     resetModal.style.display = 'none';
 });
 
-// "Hayır" butonuna basınca reddet
 declineBtn.addEventListener('click', () => {
     socket.emit('decline_reset', roomId);
     resetModal.style.display = 'none';
 });
 
-
-// --- MEVCUT FONKSİYONLARIN (DEĞİŞMEDİ) ---
+// --- OYUN MANTIĞI FONKSİYONLARI ---
 
 function updateStatus() {
-    const info = document.getElementById("turn-info");
     if (!myPlayerNumber) return;
-    info.innerText = (currentPlayer === myPlayerNumber) ? "Sizin Sıranız!" : "Rakip Bekleniyor...";
+    turnInfo.innerText = (currentPlayer === myPlayerNumber) ? "Sizin Sıranız!" : "Rakip Bekleniyor...";
 }
 
 function updateBoardVisuals() {
     board.forEach((count, i) => {
-        document.getElementById(`count-${i}`).innerText = count;
+        const countEl = document.getElementById(`count-${i}`);
+        if(countEl) countEl.innerText = count;
+        
         const pit = document.getElementById(`pit-${i}`);
+        if(!pit) return;
+        
         pit.innerHTML = '';
         for(let j=0; j<count; j++) {
             const stone = document.createElement('div');

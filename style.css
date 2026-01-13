@@ -127,3 +127,58 @@ body {
 .board-reverse .row {
     flex-direction: row-reverse; /* Kuyuların kendi içindeki sırasını çevirir */
 }
+
+/* --- YAKIŞIKLI SIFIRLA BUTONU --- */
+.controls {
+    margin-top: 25px; /* Tahta ile buton arasındaki mesafe */
+    margin-bottom: 5px; /* Buton ile İkalpm yazısı arasındaki mesafe */
+}
+
+#reset-btn {
+    background: linear-gradient(145deg, #a0522d, #5d2e0a); /* Tahtanın ahşap tonlarıyla uyumlu */
+    color: #ffcc80; /* Taş sayılarındaki altın sarısı tonu */
+    border: 2px solid #3e2723;
+    padding: 14px 40px;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    border-radius: 50px; /* Kapsül/Kuvvetli oval form */
+    box-shadow: 
+        0 6px 0 #2b1d1a, /* Butonun kalınlığı (3D alt taban) */
+        0 8px 15px rgba(0,0,0,0.6); /* Yerdeki gölgesi */
+    transition: all 0.1s ease;
+    outline: none;
+}
+
+#reset-btn:hover {
+    background: linear-gradient(145deg, #b35d2d, #6d360e);
+    color: #ffffff;
+}
+
+#reset-btn:active {
+    transform: translateY(4px); /* Basılma efekti */
+    box-shadow: 0 2px 0 #2b1d1a, 0 4px 10px rgba(0,0,0,0.5); /* Basılınca gölge küçülür */
+}
+
+/* --- ONAY MODALINI TEMA İLE UYUMLU YAPALIM --- */
+#reset-modal {
+    background: #3e2723 !important; /* Kuyuların iç rengi */
+    color: #ffcc80 !important;
+    border: 3px solid #8b4513 !important;
+    border-radius: 20px !important;
+    box-shadow: 0 0 30px rgba(0,0,0,0.9) !important;
+}
+
+#accept-reset, #decline-reset {
+    border-radius: 10px;
+    font-weight: bold;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+#accept-reset:hover, #decline-reset:hover {
+    transform: scale(1.05);
+}
