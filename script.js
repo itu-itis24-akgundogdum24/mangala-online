@@ -115,11 +115,23 @@ copyBtn.addEventListener('click', () => {
 
 joinBtn.addEventListener('click', () => {
     const targetRoom = joinInput.value.trim();
-    if (targetRoom) {
-        window.location.href = `?room=${targetRoom}`;
-    } else {
+    if (!targetRoom) {
         alert("Lütfen geçerli bir oda kodu girin.");
+        return;
     }
+    
+    if (targetRoom === roomId) {
+        alert("Zaten bu odadasınız!");
+        return;
+    }
+    
+    // Eski odadan ayrıl (sunucu tarafında disconnect ile otomatik olur)
+    // Yeni odaya katılmak için sayfayı yenile
+    // Bu durumda sayfa yenilemesi GEREKLI çünkü:
+    // 1. Eski socket bağlantısını temizlemek lazım
+    // 2. Oyun durumunu sıfırlamak lazım
+    // 3. URL'i güncellemek lazım
+    window.location.href = `?room=${targetRoom}`;
 });
 
 resetBtn.addEventListener('click', () => {
